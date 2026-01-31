@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Template</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% with count=0 %}
+        {% for name in names %}
+            {% if not name == 'kabir' %}
+                <p>{{ name }}</p>
+            {% endif %}
+            {{ count|add:"1" }}
+        {% endfor %}
+        {{ count }}
+    {% endwith %}
+    
+</body>
+</html>

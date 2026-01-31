@@ -1,17 +1,50 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from tasks.forms import TaskForm, TaskModelForm
+from tasks.models import Employee, Task
 
 # Create your views here.
-def home(request):
-    return HttpResponse("Wellcome to the task management system")
 
-def contact(request):
-    return HttpResponse("<h3 style='color: red'>Email: abdullahalmukit287@gmail.com</h3><h4 style='color:green'>Phone: +8801796124352</h4>")
+def manager_dashboard(request):
+    return render(request, "dashboard/manager-dashboard.html")
 
-def show_task(request):
-    return HttpResponse("This is our task page")
 
-def show_specific_task(request, id):
-    print("id" ,id)
-    print("id type", type)
-    return HttpResponse(f"This is show task management {id}")
+def user_dashboard(request):
+    return render(request, "dashboard/user-dashboard.html")
+
+def test(request):
+    context = {
+        "names": ["Hera", "Mukit", "kabir", "Ratna"],
+        "age" : 23
+    }
+    return render(request,'test.html', context)
+
+def create_task(request):
+    # employees = Employee.objects.all()
+    form = TaskModelForm()
+    if request.method == "POST":
+        form = TaskModelForm(request.POST)
+        if form.is_valid():
+            '''For Django Model Form Data'''
+            print(form)
+            form.save()
+
+            return render(request, 'task_form.html', {"form": form, "message": "Task Added successfully!"})
+            
+
+    context = { "form": form }
+    return render(request, "task_form.html", context)
+
+
+def view_task(request):
+    tasks = Task.objects.all()
+
+    #retrive a specific task
+    task_3 = Task.objects.get(pk=1)
+    first_task = Task.objects.first()
+    return render(request, "show_task.html", {"tasks": tasks, "task3": task_3, "first_task": first_task})
+
+    
+
+    
+    
